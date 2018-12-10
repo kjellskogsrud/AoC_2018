@@ -18,11 +18,13 @@ namespace AoC_2018
             Day1 day1 = new Day1("input/day1.txt", "Chronal Calibration");
             Day2 day2 = new Day2("input/day2.txt", "Inventory Management System");
             Day3 day3 = new Day3("input/day3.txt", "No Matter How You Slice It");
+            Day4 day4 = new Day4("input/day4.txt", "Repose Record");
 
             // Add all days to the list
             listOfDays.Add(1, day1);
             listOfDays.Add(2, day2);
             listOfDays.Add(3, day3);
+            listOfDays.Add(4, day4);
             
             // Infinite loop time!
             while(true)
@@ -62,21 +64,29 @@ namespace AoC_2018
                         Console.WriteLine("--- Enter To begin ---");
                         Console.ReadLine();
                         Console.WriteLine("------ Starting ------");
+                        try
+                        {
+                            selectedDay.SolvePart1();
 
-                        selectedDay.SolvePart1();
-                        
-                        Console.WriteLine(); // Empty line for formating
-                        Console.WriteLine("------ Part Two ------");
-                        Console.WriteLine("--- Enter To begin ---");
-                        Console.ReadLine();
-                        Console.WriteLine("------ Starting ------");
+                            Console.WriteLine(); // Empty line for formating
+                            Console.WriteLine("------ Part Two ------");
+                            Console.WriteLine("--- Enter To begin ---");
+                            Console.ReadLine();
+                            Console.WriteLine("------ Starting ------");
 
-                        selectedDay.SolvePart2();
+                            selectedDay.SolvePart2();
 
-                        Console.WriteLine(); // Empty line for formating
-                        Console.WriteLine("--- Day {0}: {1} --- Compleat!",enteredNumber,selectedDay.Title);
-                        Console.WriteLine("Enter to return to list.");
-                        Console.ReadLine();
+                            Console.WriteLine(); // Empty line for formating
+                            Console.WriteLine("--- Day {0}: {1} --- Compleat!", enteredNumber, selectedDay.Title);
+                            Console.WriteLine("Enter to return to list.");
+                            Console.ReadLine();
+                        }
+                        catch (NotImplementedException)
+                        {
+                            Console.WriteLine("Looks like this solution is not ready yet");
+                            Console.WriteLine("Enter to return to list.");
+                            Console.ReadLine();
+                        }
                     }
                     else
                     {
