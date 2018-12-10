@@ -137,10 +137,10 @@ namespace AoC_2018.Days
                         }
                         break;
                     case "falls":
-                        thisShift.Sleeing[minute] = 1;
+                        thisShift.Sleeping[minute] = 1;
                         break;
                     case "wakes":
-                        thisShift.Sleeing[minute] = 0;
+                        thisShift.Sleeping[minute] = 0;
                         break;
                     default:
                         break;
@@ -169,20 +169,20 @@ namespace AoC_2018.Days
                 int lastMinute = 0;
 
                 // now we iterate
-                for (int i = 0; i < item.Value.Sleeing.Length; i++)
+                for (int i = 0; i < item.Value.Sleeping.Length; i++)
                 {
                     // is this element blank(-1)?
-                    if (item.Value.Sleeing[i] == -1)   
+                    if (item.Value.Sleeping[i] == -1)   
                     {
                         // then write the status of the last minute
-                        item.Value.Sleeing[i] = lastMinute;
+                        item.Value.Sleeping[i] = lastMinute;
                     }
                     // if this wasn't -1, then is is either 0(awake) or 1(sleeping).
                     else
                     {
                         // regardless of what is was, we don't want to update it, but we want to save this as the last thign 
                         // that has happend
-                        lastMinute = item.Value.Sleeing[i];
+                        lastMinute = item.Value.Sleeping[i];
                     }
                 }
 
@@ -191,9 +191,9 @@ namespace AoC_2018.Days
                 // we also take the oppertunity to count the sleeping minutes of each guard since we are itterating anyway
                 Console.Write("{0}\t{1}\t", item.Value.Date,item.Value.GuardID);
                 int shiftSleeing = 0;
-                for (int i = 0; i < item.Value.Sleeing.Length; i++)
+                for (int i = 0; i < item.Value.Sleeping.Length; i++)
                 {
-                    if (item.Value.Sleeing[i] == 0)
+                    if (item.Value.Sleeping[i] == 0)
                     {
                         Console.Write(".");
                     }
@@ -201,6 +201,8 @@ namespace AoC_2018.Days
                     {
                         Console.Write("#");
                         shiftSleeing++;
+                        // PART2: we count sleep in this minute
+                        allGuards[item.Value.GuardID].sleeps[i]++;
                     }
                 }
                 // add this sleep to the guards overall sleep.
@@ -233,7 +235,7 @@ namespace AoC_2018.Days
                     // is if the correct guard?
                     if (ns.GuardID == guardID)
                     {
-                        sleepMinutes[i] = sleepMinutes[i] + ns.Sleeing[i];
+                        sleepMinutes[i] = sleepMinutes[i] + ns.Sleeping[i];
                     }
                 }
 
@@ -262,15 +264,15 @@ namespace AoC_2018.Days
             public string GuardID = "NoID";
 
             // the sleep array indicates awake/sleeping, 0 = awake, and 1 = sleeping
-            public int[] Sleeing = new int[60];
+            public int[] Sleeping = new int[60];
 
             public NightShift(string date)
             {
                 Date = date;
                 // when shifts are made, we -1 the array for sleeping
-                for (int i = 0; i < Sleeing.Length; i++)
+                for (int i = 0; i < Sleeping.Length; i++)
                 {
-                    Sleeing[i] = -1;
+                    Sleeping[i] = -1;
                 }
             }
         }
@@ -282,17 +284,49 @@ namespace AoC_2018.Days
         {
             public string guardID;
             public int sleepingHours;
+            public int[] sleeps = new int[60];
 
             public Guard(string guardID)
             {
                 this.guardID = guardID;
             }
+
+
         }
 
 
         public void SolvePart2()
         {
-            throw new NotImplementedException();
+            // NOW! we made everything we need available to us in part1, so now it is just a matter of iterating and compareing
+            string[] guardMostAsleepOnMinute = new string[60];
+            int[] maxTimesAsleepOnMinute = new int[60];
+
+            // looking at every guard for every minute we can tell who sleeps the most for any particular minute.
+            for (int i = 0; i < guardMostAsleepOnMinute.Length; i++)
+            {
+                foreach (Guard g in allGuards.Values)
+                {
+                    if (g.sleeps[i] > maxTimesAsleepOnMinute[i])
+                    {
+                        guardMostAsleepOnMinute[i] = g.guardID;
+                        maxTimesAsleepOnMinute[i] = g.sleeps[i];
+                    }
+                }
+            }
+
+            // now we just run through the list of those guards to see what minutes is the one most sleept on
+            int maxTimesSleep = 0;
+            int maxTimesSleepID = 0;
+            for (int i = 0; i < maxTimesAsleepOnMinute.Length; i++)
+            {
+                if(maxTimesAsleepOnMinute[i]> maxTimesSleep)
+                {
+                    maxTimesSleep = maxTimesAsleepOnMinute[i];
+                    maxTimesSleepID = i;
+                }
+            }
+            Console.WriteLine("Guard {0}, sleept {1} times on minute {2}", guardMostAsleepOnMinute[maxTimesSleepID], maxTimesSleep, maxTimesSleepID);
+            Console.ReadLine();
         }
     }
 }
