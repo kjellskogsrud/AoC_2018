@@ -19,12 +19,16 @@ namespace AoC_2018
             Day2 day2 = new Day2("input/day2.txt", "Inventory Management System");
             Day3 day3 = new Day3("input/day3.txt", "No Matter How You Slice It");
             Day4 day4 = new Day4("input/day4.txt", "Repose Record");
+            Day5 day5 = new Day5("input/day5.txt", "Alchemical Reduction");
+            Day6 day6 = new Day6("input/day6.txt", "Chronal Coordinates");
 
             // Add all days to the list
             listOfDays.Add(1, day1);
             listOfDays.Add(2, day2);
             listOfDays.Add(3, day3);
             listOfDays.Add(4, day4);
+            listOfDays.Add(5, day5);
+            listOfDays.Add(6, day6);
             
             // Infinite loop time!
             while(true)
